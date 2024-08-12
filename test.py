@@ -8,6 +8,8 @@ html_code = """
     <h3>Click the button to get your current position:</h3>
     <button onclick="getLocation()">Get Location</button>
 
+    <p id="location">Your location will be displayed here.</p>
+
     <script>
       const options = {
         enableHighAccuracy: true,
@@ -18,21 +20,24 @@ html_code = """
       function success(pos) {
         const crd = pos.coords;
 
-        console.log("Your current position is:");
-        console.log(`Latitude : ${crd.latitude}`);
-        console.log(`Longitude: ${crd.longitude}`);
-        console.log(`More or less ${crd.accuracy} meters.`);
+        document.getElementById("location").innerHTML = `
+          Latitude: ${crd.latitude} <br>
+          Longitude: ${crd.longitude} <br>
+          Accuracy: ${crd.accuracy} meters
+        `;
       }
 
       function error(err) {
-        console.warn(`ERROR(${err.code}): ${err.message}`);
+        document.getElementById("location").innerHTML = `
+          ERROR(${err.code}): ${err.message}
+        `;
       }
 
       function getLocation() {
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(success, error, options);
         } else {
-          console.warn("Geolocation is not supported by this browser.");
+          document.getElementById("location").innerHTML = "Geolocation is not supported by this browser.";
         }
       }
     </script>
